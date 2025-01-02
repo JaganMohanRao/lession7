@@ -1,0 +1,27 @@
+name: upload artifacts
+
+on: 
+  push:
+
+jobs:
+  download-artifact:
+    needs: upload-artifact
+    name: Download a Build Artifact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4.1.8
+          with:
+            name: my-artifact
+      - name: Display of structure of downloaded files
+            run:ls -R
+            run: cat myArtifact.txt
+  upload-artifact:
+    name: upload-artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - run: docker info > myArtifact.txt
+      - uses: actions/upload-artifacts@v3
+        with:
+          name: my-artifact
+          path: myArtifact.txt
+      
